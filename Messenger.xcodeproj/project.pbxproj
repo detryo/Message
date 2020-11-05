@@ -19,6 +19,7 @@
 		36D7B3E72551853F00C7D922 /* VideoPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D7B3E62551853F00C7D922 /* VideoPlayerVC.swift */; };
 		36D7B3EB2551856F00C7D922 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D7B3EA2551856F00C7D922 /* NewConversationVC.swift */; };
 		36D7B3EE255185A200C7D922 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D7B3ED255185A200C7D922 /* ProfileVC.swift */; };
+		36D7B3F42551993D00C7D922 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D7B3F32551993D00C7D922 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		36D7B3E62551853F00C7D922 /* VideoPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerVC.swift; sourceTree = "<group>"; };
 		36D7B3EA2551856F00C7D922 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		36D7B3ED255185A200C7D922 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		36D7B3F32551993D00C7D922 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,9 +83,8 @@
 		36D7B3D125517F7700C7D922 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				36D7B3F02551905200C7D922 /* Login & Register */,
 				36D7B3BF25517E7100C7D922 /* ConversationsVC.swift */,
-				36D7B3DA2551831200C7D922 /* LoginVC.swift */,
-				36D7B3DD2551832800C7D922 /* RegisterVC.swift */,
 				36D7B3E12551851A00C7D922 /* PhotoViewerVC.swift */,
 				36D7B3E62551853F00C7D922 /* VideoPlayerVC.swift */,
 				36D7B3EA2551856F00C7D922 /* NewConversationVC.swift */,
@@ -120,6 +121,7 @@
 			children = (
 				36D7B3BB25517E7100C7D922 /* AppDelegate.swift */,
 				36D7B3BD25517E7100C7D922 /* SceneDelegate.swift */,
+				36D7B3F32551993D00C7D922 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -131,6 +133,15 @@
 				36D7B3C625517E7300C7D922 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		36D7B3F02551905200C7D922 /* Login & Register */ = {
+			isa = PBXGroup;
+			children = (
+				36D7B3DA2551831200C7D922 /* LoginVC.swift */,
+				36D7B3DD2551832800C7D922 /* RegisterVC.swift */,
+			);
+			path = "Login & Register";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,6 +219,7 @@
 				36D7B3C025517E7100C7D922 /* ConversationsVC.swift in Sources */,
 				36D7B3EE255185A200C7D922 /* ProfileVC.swift in Sources */,
 				36D7B3BC25517E7100C7D922 /* AppDelegate.swift in Sources */,
+				36D7B3F42551993D00C7D922 /* Extensions.swift in Sources */,
 				36D7B3DB2551831200C7D922 /* LoginVC.swift in Sources */,
 				36D7B3E22551851A00C7D922 /* PhotoViewerVC.swift in Sources */,
 				36D7B3BE25517E7100C7D922 /* SceneDelegate.swift in Sources */,
