@@ -39,3 +39,8 @@ extension UIView {
         return self.frame.size.width + self.frame.origin.x
     }
 }
+
+struct Identifier {
+    
+    static let cell = "cell"
+}
