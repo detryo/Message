@@ -44,3 +44,8 @@ struct Identifier {
     
     static let cell = "cell"
 }
+
+extension Notification.Name {
+    
+    static let didLogInNotification = Notification.Name("didLogInNotification")
+}

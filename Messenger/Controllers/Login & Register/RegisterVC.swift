@@ -236,7 +236,6 @@ class RegisterVC: UIViewController {
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-        
         present(alert, animated: true)
     }
     
@@ -253,14 +252,10 @@ extension RegisterVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField == emailField {
-            
             passwordField.becomeFirstResponder()
-            
         } else if textField == passwordField {
-            
             registerButtonTapped()
         }
-        
         return true
     }
 }
