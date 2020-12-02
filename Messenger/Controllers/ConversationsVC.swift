@@ -58,8 +58,29 @@ class ConversationsVC: UIViewController {
     @objc private func didTapComposeButton() {
         
         let newConversationVC = NewConversationVC()
+        
+        newConversationVC.complition = { [weak self] result in
+            print("\(result)")
+            self?.createNewConversation(result: result)
+        }
+        
         let navigationController = UINavigationController(rootViewController: newConversationVC)
         present(navigationController, animated: true)
+    }
+    
+    private func createNewConversation(result: [String : String]) {
+        
+        guard let name = result["name"],
+              let email = result["email"] else {
+            return
+        }
+        
+        let chatVC = ChatVC(with: email)
+        chatVC.isNewConversation = true
+        chatVC.title = name
+        chatVC.navigationItem.largeTitleDisplayMode = .never
+        
+        navigationController?.pushViewController(chatVC, animated: true)
     }
     
     private func validateAuth() {
@@ -106,7 +127,7 @@ extension ConversationsVC: UITableViewDataSource, UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let chatVC = ChatVC()
+        let chatVC = ChatVC(with: "fakeEmail@gmail.com")
         chatVC.title = "Prueba"
         chatVC.navigationItem.largeTitleDisplayMode = .never
         
