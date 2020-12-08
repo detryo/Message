@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		361525302578F3A50037AC23 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3615252F2578F3A50037AC23 /* ConversationCell.swift */; };
+		361525332578F9870037AC23 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361525322578F9870037AC23 /* Constants.swift */; };
 		361B6693255453C3009F0271 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 361B6692255453C3009F0271 /* GoogleService-Info.plist */; };
 		36A518772563F1AC0019DE38 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A518762563F1AC0019DE38 /* ChatVC.swift */; };
 		36A51896256431C90019DE38 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A51895256431C90019DE38 /* StorageManager.swift */; };
@@ -29,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		18E51BC521478B7EFB727FE9 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
+		3615252F2578F3A50037AC23 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		361525322578F9870037AC23 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		361B6692255453C3009F0271 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36A518762563F1AC0019DE38 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		36A51895256431C90019DE38 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 		36D7B3D225517F7E00C7D922 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3615252F2578F3A50037AC23 /* ConversationCell.swift */,
 				36D7B3D625517FE100C7D922 /* Storyboards */,
 				36D7B3C425517E7300C7D922 /* Assets.xcassets */,
 			);
@@ -141,6 +146,7 @@
 				36D7B3F32551993D00C7D922 /* Extensions.swift */,
 				36B99E8B25599E3200B21987 /* DatabaseManager.swift */,
 				36A51895256431C90019DE38 /* StorageManager.swift */,
+				361525322578F9870037AC23 /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -318,7 +324,9 @@
 				36B99E8C25599E3200B21987 /* DatabaseManager.swift in Sources */,
 				36D7B3E72551853F00C7D922 /* VideoPlayerVC.swift in Sources */,
 				36D7B3C025517E7100C7D922 /* ConversationsVC.swift in Sources */,
+				361525332578F9870037AC23 /* Constants.swift in Sources */,
 				36D7B3EE255185A200C7D922 /* ProfileVC.swift in Sources */,
+				361525302578F3A50037AC23 /* ConversationCell.swift in Sources */,
 				36D7B3BC25517E7100C7D922 /* AppDelegate.swift in Sources */,
 				36D7B3F42551993D00C7D922 /* Extensions.swift in Sources */,
 				36D7B3DB2551831200C7D922 /* LoginVC.swift in Sources */,
