@@ -14,29 +14,32 @@ final class StorageManager {
     private let storage = Storage.storage().reference()
     public typealias UploadPictureComplition = (Result<String, Error>) -> Void
     
-    /// Upload picture to firebase storage and return complition with url string to download
-    public func uploadProfilePicture(with data: Data, fileName: String, complition: @escaping UploadPictureComplition) {
+    /// Uploads picture to firebase storage and returns completion with url string to download
+    public func uploadProfilePicture(with data: Data, fileName: String, completion: @escaping UploadPictureComplition) {
         
-        storage.child("images/\(fileName)").putData(data, metadata: nil, completion: { metadata, error in
+        storage.child("images/\(fileName)").putData(data, metadata: nil, completion: { [weak self] metadata, error in
             
-            guard error == nil else {
-                // Failed
-                print("failed to upload data to firebase for picture")
-                complition(.failure(StorageErrors.failedToUpload))
+            guard let strongSelf = self else {
                 return
             }
-            
-            self.storage.child("images/\(fileName)").downloadURL(completion: { url, error in
-                
+
+            guard error == nil else {
+                // failed
+                print("failed to upload data to firebase for picture")
+                completion(.failure(StorageErrors.failedToUpload))
+                return
+            }
+
+            strongSelf.storage.child("images/\(fileName)").downloadURL(completion: { url, error in
                 guard let url = url else {
                     print("Failed to get download url")
-                    complition(.failure(StorageErrors.failedToGetDownloadURL))
+                    completion(.failure(StorageErrors.failedToGetDownloadURL))
                     return
                 }
-                
+
                 let urlString = url.absoluteString
                 print("download url returned: \(urlString)")
-                complition(.success(urlString))
+                completion(.success(urlString))
             })
         })
     }
@@ -47,17 +50,17 @@ final class StorageManager {
         case failedToGetDownloadURL
     }
     
-    public func downloadURL(for path: String, complition: @escaping (Result<URL, Error>) -> Void) {
+    public func downloadURL(for path: String, completion: @escaping (Result<URL, Error>) -> Void) {
         
         let reference = storage.child(path)
-        
+
         reference.downloadURL(completion: { url, error in
             
             guard let url = url, error == nil else {
-                complition(.failure(StorageErrors.failedToGetDownloadURL))
+                completion(.failure(StorageErrors.failedToGetDownloadURL))
                 return
             }
-            complition(.success(url))
+            completion(.success(url))
         })
     }
 }

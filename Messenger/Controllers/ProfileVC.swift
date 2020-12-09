@@ -56,7 +56,7 @@ class ProfileVC: UIViewController {
         imageView.layer.masksToBounds = true
         headerView.addSubview(imageView)
         
-        StorageManager.shared.downloadURL(for: path, complition: { [weak self] result in
+        StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             
             switch result {
             case .success(let url):
