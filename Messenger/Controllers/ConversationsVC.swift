@@ -103,7 +103,7 @@ class ConversationsVC: UIViewController {
             }
         })
     }
-    
+    //
     @objc private func didTapComposeButton() {
         
         let newConversationVC = NewConversationVC()
@@ -116,13 +116,11 @@ class ConversationsVC: UIViewController {
         let navigationController = UINavigationController(rootViewController: newConversationVC)
         present(navigationController, animated: true)
     }
-    
-    private func createNewConversation(result: [String : String]) {
+    //
+    private func createNewConversation(result: SearchResults) {
         
-        guard let name = result["name"],
-              let email = result["email"] else {
-            return
-        }
+        let name = result.name
+        let email = result.email
         
         let chatVC = ChatVC(with: email, id: nil)
         chatVC.isNewConversation = true

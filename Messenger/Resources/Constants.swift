@@ -10,4 +10,5 @@ import Foundation
 struct Identifiers {
     
     static let ConversationCell = "ConversationCell"
+    static let NewConversationCell = "NewConversationCell"
 }
