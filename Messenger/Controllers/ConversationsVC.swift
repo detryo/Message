@@ -124,7 +124,27 @@ class ConversationsVC: UIViewController {
         
         newConversationVC.complition = { [weak self] result in
             print("\(result)")
-            self?.createNewConversation(result: result)
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let currentConversation = strongSelf.conversations
+            
+            if let targetConversation = currentConversation.first(where: {
+                
+                $0.otherUserEmail == DatabaseManager.safeEmail(emailAddress: result.email)
+                
+            }) {
+                let chatVC = ChatVC(with: targetConversation.otherUserEmail, id: targetConversation.id)
+                chatVC.isNewConversation = false
+                chatVC.title = targetConversation.name
+                chatVC.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(chatVC, animated: true)
+                
+            } else {
+                strongSelf.createNewConversation(result: result)
+            }
         }
         
         let navigationController = UINavigationController(rootViewController: newConversationVC)
@@ -134,13 +154,33 @@ class ConversationsVC: UIViewController {
     private func createNewConversation(result: SearchResults) {
         
         let name = result.name
-        let email = result.email
+        let email = DatabaseManager.safeEmail(emailAddress: result.email)
         
-        let chatVC = ChatVC(with: email, id: nil)
-        chatVC.isNewConversation = true
-        chatVC.title = name
-        chatVC.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(chatVC, animated: true)
+        // check in database if conversation with these two users exists
+        // if it does, reuse conversation id
+        // otherwise use existing code
+        DatabaseManager.shared.conversationExists(witch: email, completion: { [weak self] result in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let conversationId):
+                let chatVC = ChatVC(with: email, id: conversationId)
+                chatVC.isNewConversation = false
+                chatVC.title = name
+                chatVC.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(chatVC, animated: true)
+                
+            case .failure(_):
+                let chatVC = ChatVC(with: email, id: nil)
+                chatVC.isNewConversation = true
+                chatVC.title = name
+                chatVC.navigationItem.largeTitleDisplayMode = .never
+                strongSelf.navigationController?.pushViewController(chatVC, animated: true)
+            }
+        })
     }
     
     private func validateAuth() {
@@ -188,13 +228,15 @@ extension ConversationsVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
         let model = conversations[indexPath.row]
+        openConversation(model)
+    }
+    
+    func openConversation(_ model: Conversation) {
         
         let chatVC = ChatVC(with: model.otherUserEmail, id: model.id)
         chatVC.title = model.name
         chatVC.navigationItem.largeTitleDisplayMode = .never
-        
         navigationController?.pushViewController(chatVC, animated: true)
     }
     
