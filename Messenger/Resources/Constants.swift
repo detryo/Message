@@ -11,4 +11,5 @@ struct Identifiers {
     
     static let ConversationCell = "ConversationCell"
     static let NewConversationCell = "NewConversationCell"
+    static let ProfileTableViewCell = "ProfileTableViewCell"
 }
