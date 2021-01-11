@@ -57,7 +57,6 @@ class ConversationsVC: UIViewController {
         view.addSubview(tableView)
         view.addSubview(noConversationsLabel)
         setupTableView()
-        fetchConversations()
         startListenerForConversations()
         
         loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
@@ -74,6 +73,11 @@ class ConversationsVC: UIViewController {
         super.viewDidLayoutSubviews()
         
         tableView.frame = view.bounds
+        
+        noConversationsLabel.frame = CGRect(x: 10,
+                                            y: (view.height - 100) / 2,
+                                            width: view.width - 10,
+                                            height: 100)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -102,9 +106,13 @@ class ConversationsVC: UIViewController {
             case .success(let conversations):
                 print("successfully got conversation model")
                 guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    self?.noConversationsLabel.isHidden = false
                     return
                 }
                 
+                self?.noConversationsLabel.isHidden = true
+                self?.tableView.isHidden = false
                 self?.conversations = conversations
                 
                 DispatchQueue.main.async {
@@ -114,6 +122,8 @@ class ConversationsVC: UIViewController {
                 
             case .failure(let error):
                 print("failed to get conversation: \(error)")
+                self?.tableView.isHidden = true
+                self?.noConversationsLabel.isHidden = false
             }
         })
     }
@@ -198,11 +208,6 @@ class ConversationsVC: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-    }
-    
-    private func fetchConversations() {
-        
-        tableView.isHidden = false
     }
 }
 
