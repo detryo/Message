@@ -11,174 +11,148 @@ import FBSDKLoginKit
 import GoogleSignIn
 import SDWebImage
 
-enum ProfileViewModelType {
-    
-    case info, logOut
-}
-
-struct ProfileViewModel {
-    
-    let viewModelType: ProfileViewModelType
-    let title: String
-    let handler: (() -> Void)?
-}
-
-class ProfileVC: UIViewController {
+final class ProfileVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
     var data = [ProfileViewModel]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: Identifiers.ProfileTableViewCell)
-        
+        tableView.register(ProfileTableViewCell.self,
+                           forCellReuseIdentifier: Identifiers.ProfileTableViewCell)
+
         data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")",
+                                     title: "Name: \(UserDefaults.standard.value(forKey:"name") as? String ?? "No Name")",
                                      handler: nil))
-        
         data.append(ProfileViewModel(viewModelType: .info,
-                                     title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")",
+                                     title: "Email: \(UserDefaults.standard.value(forKey:"email") as? String ?? "No Email")",
                                      handler: nil))
-        
-        data.append(ProfileViewModel(viewModelType: .logOut,  title: "Log Out",  handler: { [weak self] in
-            
+        data.append(ProfileViewModel(viewModelType: .logout, title: "Log Out", handler: { [weak self] in
+
             guard let strongSelf = self else {
                 return
             }
-            
+
             let actionSheet = UIAlertController(title: "",
                                           message: "",
                                           preferredStyle: .actionSheet)
-            
             actionSheet.addAction(UIAlertAction(title: "Log Out",
                                           style: .destructive,
                                           handler: { [weak self] _ in
-                                            
-                                            guard let strongSelf = self else { return }
-                                            
+
+                                            guard let strongSelf = self else {
+                                                return
+                                            }
+
                                             UserDefaults.standard.setValue(nil, forKey: "email")
                                             UserDefaults.standard.setValue(nil, forKey: "name")
-                                            
-                                            // Log Out Facebook
+
+                                            // Log Out facebook
                                             FBSDKLoginKit.LoginManager().logOut()
-                                            
-                                            // Google Log Out
+
+                                            // Google Log out
                                             GIDSignIn.sharedInstance()?.signOut()
-                                            
+
                                             do {
                                                 try FirebaseAuth.Auth.auth().signOut()
-                                                let viewController = LoginVC()
-                                                let nav = UINavigationController(rootViewController: viewController)
+
+                                                let vc = LoginVC()
+                                                let nav = UINavigationController(rootViewController: vc)
                                                 nav.modalPresentationStyle = .fullScreen
                                                 strongSelf.present(nav, animated: true)
-                                            } catch {
-                                                // poner una alerta
+                                            }
+                                            catch {
                                                 print("Failed to log out")
                                             }
-                                            
-                                          }))
-            
+
+            }))
+
             actionSheet.addAction(UIAlertAction(title: "Cancel",
                                                 style: .cancel,
                                                 handler: nil))
-            
+
             strongSelf.present(actionSheet, animated: true)
         }))
 
-        tableView.dataSource = self
+        tableView.register(UITableViewCell.self,
+                           forCellReuseIdentifier: "cell")
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Identifier.cell)
+        tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
     }
-    
+
     func createTableHeader() -> UIView? {
-        
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
         }
-        
+
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        let fileName = safeEmail + "_profile_picture.png"
-        let path = "images/" + fileName
-        
+        let filename = safeEmail + "_profile_picture.png"
+        let path = "images/"+filename
+
         let headerView = UIView(frame: CGRect(x: 0,
                                         y: 0,
                                         width: self.view.width,
                                         height: 300))
-        
+
         headerView.backgroundColor = .link
-        
-        let size: CGFloat = 150
-        let imageView = UIImageView(frame: CGRect(x: (headerView.width - 150) / 2,
+
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width-150) / 2,
                                                   y: 75,
-                                                  width: size,
-                                                  height: size))
-        
+                                                  width: 150,
+                                                  height: 150))
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = imageView.width / 2
         imageView.backgroundColor = .white
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.borderWidth = 3
         imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.width/2
         headerView.addSubview(imageView)
-        
+
         StorageManager.shared.downloadURL(for: path, completion: { result in
-            
             switch result {
             case .success(let url):
                 imageView.sd_setImage(with: url, completed: nil)
-                
             case .failure(let error):
                 print("Failed to get download url: \(error)")
             }
         })
-    
+
         return headerView
     }
 }
 
-extension ProfileVC: UITableViewDataSource, UITableViewDelegate {
-    
+extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return data.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let viewModel = data[indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.ProfileTableViewCell,
                                                  for: indexPath) as! ProfileTableViewCell
-        
-        cell.setup(witch: viewModel)
-        
+        cell.setUp(with: viewModel)
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         tableView.deselectRow(at: indexPath, animated: true)
         data[indexPath.row].handler?()
     }
 }
 
 class ProfileTableViewCell: UITableViewCell {
-    
-    public func setup(witch viewModel: ProfileViewModel) {
-        
+
+    public func setUp(with viewModel: ProfileViewModel) {
         self.textLabel?.text = viewModel.title
-        
         switch viewModel.viewModelType {
         case .info:
-            self.textLabel?.textAlignment = .left
-            self.selectionStyle = .none
-            
-        case .logOut:
-            self.textLabel?.textColor = .red
-            self.textLabel?.textAlignment = .center
+            textLabel?.textAlignment = .left
+            selectionStyle = .none
+        case .logout:
+            textLabel?.textColor = .red
+            textLabel?.textAlignment = .center
         }
     }
 }

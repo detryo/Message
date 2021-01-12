@@ -293,14 +293,14 @@ extension LoginVC: LoginButtonDelegate {
             UserDefaults.standard.set(email, forKey: "email")
             UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
 
-            DatabaseManager.shared.userExists(with: email, complition: { exists in
+            DatabaseManager.shared.userExists(with: email, completion: { exists in
                 
                 if !exists {
                     
                     let chatUser = ChatAppUser(firstName: firstName,
                                                lastName: lastName,
                                                emailAddress: email)
-                    DatabaseManager.shared.insertUser(with: chatUser, complition: { success in
+                    DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                         
                         if success {
 

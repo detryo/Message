@@ -46,11 +46,9 @@ class NewConversationCell: UITableViewCell {
                                      y: 20,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: 50)
-
     }
 
-    public func configure(with model: SearchResults) {
-        
+    public func configure(with model: SearchResult) {
         userNameLabel.text = model.name
 
         let path = "images/\(model.email)_profile_picture.png"

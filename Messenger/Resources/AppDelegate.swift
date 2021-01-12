@@ -51,9 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - GIDSignInDelegate
 
 extension  AppDelegate: GIDSignInDelegate {
-    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        
         guard error == nil else {
             if let error = error {
                 print("Failed to sign in with Google: \(error)")
@@ -76,13 +74,13 @@ extension  AppDelegate: GIDSignInDelegate {
         UserDefaults.standard.set(email, forKey: "email")
         UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
 
-        DatabaseManager.shared.userExists(with: email, complition: { exists in
+        DatabaseManager.shared.userExists(with: email, completion: { exists in
             if !exists {
                 // insert to database
                 let chatUser = ChatAppUser(firstName: firstName,
                                            lastName: lastName,
                                            emailAddress: email)
-                DatabaseManager.shared.insertUser(with: chatUser, complition: { success in
+                DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                     if success {
                         // upload image
 
@@ -108,6 +106,8 @@ extension  AppDelegate: GIDSignInDelegate {
                                 })
                             }).resume()
                         }
+
+
                     }
                 })
             }

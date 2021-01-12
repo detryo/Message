@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 import JGProgressHUD
 
-class RegisterVC: UIViewController {
+final class RegisterVC: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
 
@@ -209,7 +209,7 @@ class RegisterVC: UIViewController {
         spinner.show(in: view)
         
         // Firebase Log In
-        DatabaseManager.shared.userExists(with: email, complition: { [weak self] exists in
+        DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
             
             guard let strongSelf = self else { return }
             
@@ -237,7 +237,7 @@ class RegisterVC: UIViewController {
                                            lastName: lastName,
                                            emailAddress: email)
                 
-                DatabaseManager.shared.insertUser(with:chatUser, complition: { success in
+                DatabaseManager.shared.insertUser(with:chatUser, completion: { success in
                  
                     if success {
                         // upload image
